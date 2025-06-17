@@ -9,8 +9,8 @@ interface Option {
 
 interface SearchableDropdownProps {
   options: Option[];
-  value: Option | null;
-  onChange: (option: Option | null) => void;
+  value: string | null;
+  onChange: (value: string | null) => void;
   placeholder?: string;
   className?: string;
 }
@@ -25,6 +25,8 @@ export function SearchableDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = options.find(option => option.value === value) || null;
 
   const filteredOptions = options.filter((option) =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
@@ -42,7 +44,7 @@ export function SearchableDropdown({
   }, []);
 
   const handleSelect = (option: Option) => {
-    onChange(option);
+    onChange(option.value);
     setSearchTerm('');
     setIsOpen(false);
   };
@@ -70,13 +72,13 @@ export function SearchableDropdown({
               autoFocus
             />
           ) : (
-            <span className={value ? 'dropdown-selected' : 'dropdown-placeholder'}>
-              {value ? value.label : placeholder}
+            <span className={selectedOption ? 'dropdown-selected' : 'dropdown-placeholder'}>
+              {selectedOption ? selectedOption.label : placeholder}
             </span>
           )}
         </div>
         <div className="dropdown-actions">
-          {value && !isOpen && (
+          {selectedOption && !isOpen && (
             <button
               onClick={(e) => {
                 e.stopPropagation();

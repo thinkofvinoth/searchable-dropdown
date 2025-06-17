@@ -19,7 +19,9 @@ const sampleOptions: Option[] = [
 ];
 
 function App() {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+
+  const selectedOption = sampleOptions.find(option => option.value === selectedValue);
 
   return (
     <div className="app-container">
@@ -33,14 +35,14 @@ function App() {
           
           <SearchableDropdown
             options={sampleOptions}
-            value={selectedOption}
-            onChange={setSelectedOption}
+            value={selectedValue}
+            onChange={setSelectedValue}
             placeholder="Choose a framework..."
           />
 
           {selectedOption && (
             <p className="selected-info">
-              Selected: <span className="selected-value">{selectedOption.label}</span>
+              Selected: <span className="selected-value">{selectedOption.label}</span> (Value: {selectedValue})
             </p>
           )}
         </div>
